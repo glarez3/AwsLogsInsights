@@ -2,6 +2,13 @@
 
 ___
 
+
+fields @timestamp, @message
+| stats count(*) as records by srcAddr as SourceIP, srcPort as OriginPort, dstPort as DestinationPort, dstAddr as DestinationIP, action
+| filter interfaceId="eni-00fe3e7819e9fc592" # Paste eni of the resource you would like to analize.
+#| filter dstPort="4120" # Filter by specific port on destination
+| sort HitCount desc
+
 ## AFP VPC Flow logs denied IP
 
     filter action="REJECT"
@@ -12,7 +19,7 @@ _
 
 ## Comunicacion (Puertos e IP) por ENI
 
-    fields @timestemp, @message
+    fields @timestamp, @message
     | stats count(*) as records by srcAddr as SourceIP, srcPort as OriginPort, dstPort as DestinationPort, dstAddr as DestinationIP, action
     | filter interfaceId="eni-e0329698"
     | filter dstPort="4120" or dstPort="1521" or dstPort="22" or dstPort="7001" or dstPort="1523"
@@ -21,7 +28,7 @@ _
 
 ## Comunicaciones por puertos
 
-    fields @timestemp, @message
+    fields @timestamp, @message
     | stats count(*) as records by srcAddr as SourceIP, srcPort as OriginPort, dstPort as DestinationPort, dstAddr as DestinationIP, action
     | filter dstPort="7777"
     | sort HitCount desc
