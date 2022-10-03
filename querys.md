@@ -2,7 +2,6 @@
 
 ___
 
-
 fields @timestamp, @message
 | stats count(*) as records by srcAddr as SourceIP, srcPort as OriginPort, dstPort as DestinationPort, dstAddr as DestinationIP, action
 | filter interfaceId="eni-00fe3e7819e9fc592" # Paste eni of the resource you would like to analize.
@@ -17,7 +16,7 @@ fields @timestamp, @message
     | filter srcAddr = "91.210.107.56" # Ver si se esta bloqueando alguna IP en la VPC "vpc-4a62ee2f AFP VPC"
 _
 
-## Comunicacion (Puertos e IP) por ENI
+## Traffic by ENI
 
     fields @timestamp, @message
     | stats count(*) as records by srcAddr as SourceIP, srcPort as OriginPort, dstPort as DestinationPort, dstAddr as DestinationIP, action
@@ -26,7 +25,7 @@ _
     | sort HitCount desc
 _
 
-## Comunicaciones por puertos
+## Port traffic
 
     fields @timestamp, @message
     | stats count(*) as records by srcAddr as SourceIP, srcPort as OriginPort, dstPort as DestinationPort, dstAddr as DestinationIP, action
@@ -35,7 +34,7 @@ _
 
  _
 
-## Ver trafico de IP o segmentos en vpc
+## IP Traffic or network segments
 
     fields @timestamp, srcAddr, srcPort, dstAddr, dstPort
     | sort srcAddr desc
